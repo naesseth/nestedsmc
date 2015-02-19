@@ -7,8 +7,7 @@ in the paper.
     :members:
     
 .. autoclass:: nestedSMCmodular.nestedSMC
-    :members:
+    :members: simulate
     
 .. autoclass:: nestedSMCinner.inner
-    :members:
-
+    :members: simulate

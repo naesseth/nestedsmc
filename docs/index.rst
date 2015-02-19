@@ -9,7 +9,7 @@ Welcome to Nested Sequential Monte Carlo's documentation!
 Contents:
 
 .. toctree::
-    :maxdepth: 4
+    :maxdepth: 2
     
     help
     lgss

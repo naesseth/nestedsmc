@@ -10,3 +10,5 @@ space model described in the paper.
 .. autoclass:: nestedSMC.nestedFAPF
     :members:
 
+.. automodule:: runBootstrap
+    :members:

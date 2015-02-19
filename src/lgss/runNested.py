@@ -1,11 +1,29 @@
+#!/usr/bin/python
 import helpfunctions as hlp
 import numpy as np
-import nestedFSMC as nsmc
+import nestedSMC as nsmc
 from optparse import OptionParser
 
-
-
 def runNested(d, tauPhi, N, M, nrRuns):
+    r"""Run NSMC filtering on high-dimensional LGSS.
+    
+    Parameters
+    ----------
+    d : int
+        State dimension.
+    tauPhi : float
+        Measurement precision.
+    N : int
+        Number of particles, 1st level.
+    M : int
+        Number of particles, 2nd level.
+    nrRuns : int
+        Number of independent runs of the algorithm.
+    
+    Returns
+    -------
+    Saves E[X] and E[X**2] estimates.
+    """
     # Model init
     a = 0.5
     tauPsi = 1.
@@ -47,8 +65,8 @@ def runNested(d, tauPhi, N, M, nrRuns):
             f = open(filename, 'a')
             tmpVec = np.r_[t+1, ESS[t], np.mean(X,axis=0), np.mean(X**2,axis=0)]
             np.savetxt(f, tmpVec.reshape((1,len(tmpVec))),delimiter=',')
-		f.close()
-
+            f.close()
+        
 if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option("-d", type=int, help="State dimension")
