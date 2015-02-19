@@ -1,15 +1,32 @@
 #!/usr/bin/python
-"""
-
-Class nested SMC.
-
-"""
 import numpy as np
 import helpfunctions as hlp
 import math
 
 class inner:
-	def __init__(self, params, y, N, xTimeCond=None, xSpaceCond=None):
+    """Class whose constructor generates a particle system to be used
+    for nested SMC procedure on the row space.
+    
+    Constructor
+    
+    Parameters
+    ----------
+    y : 1-D array_like
+        Measurements.
+    N : int
+        Number of particles in row filter.
+    xTimeCond : 1-D array_like
+        Conditional trajectory from previous time step.
+    xTimeCond : 1-D array_like
+        Conditional trajectory from previous column.
+        
+    Returns
+    -------
+    q : object
+        Generates a nested SMC object that contains logZ estimate and
+        the particle system.
+    """
+    def __init__(self, params, y, N, xTimeCond=None, xSpaceCond=None):
 		C1 = 0.5
 		C2 = 3.
 
@@ -87,9 +104,21 @@ class inner:
 		self.y = y
 		self.logZ = logZ
 		self.w = w
-		
-	def simulate(self, BS=True):
-		if BS:
+        
+    def simulate(self, BS=True):
+        """Simulate properly weighted sample.
+        
+        Parameters
+        ----------
+        BS : bool
+            Sample using backward simulation.
+            
+        Returns
+        -------
+        Xout : 1-D array_like
+            Simulated trajectory.
+        """
+        if BS:
 			C1 = 0.5
 			def logPsi(xp,x): return C1*(x == xp)
 			w = np.zeros( self.N )
@@ -106,7 +135,7 @@ class inner:
 				Xout[i] = self.X[b,i]
 			
 			return Xout
-		else:
+        else:
 			b = hlp.discreteSampling(np.ones(self.N),np.arange(self.N),M)
 			return self.Xa[b,:]
 

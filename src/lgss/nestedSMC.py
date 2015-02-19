@@ -1,14 +1,19 @@
 #!/usr/bin/python
-"""
-
-Class nested SMC.
-
-"""
 import numpy as np
 import helpfunctions as hlp
 
 class nestedFAPF:
-	def __init__(self, params, Y, N, xCond=None):
+    r"""Class to generate properly weighted samples from high-dimensional
+    linear Gaussian state space model.
+    
+    Constructor
+    
+    Parameters
+    ----------
+    params : model
+        Struct-like (see helpfunctions) containing model parameters.
+    """
+    def __init__(self, params, Y, N, xCond=None):
 		# Model init
 		d = len(Y)
 		def logPhi(x,y): return -0.5*params.tauPhi*(x-y)**2
@@ -96,10 +101,21 @@ class nestedFAPF:
 		self.w = w
 		self.xCond = xCond
 		#self.nrResamp = np.sum(ESS < NT)
-		
-	def simulate(self, M, BS=True):
-		
-		if BS:
+        
+    def simulate(self, M, BS=True):
+        r"""Simulate properly weighted sample.
+        
+        Parameters
+        ----------
+        BS : bool
+            Sample using backward simulation.
+            
+        Returns
+        -------
+        Xout : 1-D array_like
+            Simulated trajectory.
+        """
+        if BS:
 			def logPsi(xp,x): return -0.5*self.params.tauPsi*(xp-x)**2
 			w = np.zeros( self.N )
 			logW = np.zeros( self.N )
@@ -116,7 +132,7 @@ class nestedFAPF:
 					Xout[j,i] = self.X[b,i]
 			
 			return Xout
-		else:
+        else:
 			b = hlp.discreteSampling(np.ones(self.N),np.arange(self.N),M)
 			return self.Xa[b,:]
 			
